@@ -1,7 +1,5 @@
-import React from 'react'
+import Page from "../partial/Page";
 
-export default function page() {
-  return (
-    <div>this is user page</div>
-  )
+export default function Users() {
+  return <Page title={"Users"}>Coming soon..</Page>;
 }

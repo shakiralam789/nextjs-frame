@@ -1,4 +1,5 @@
-import { useState } from "react";
+// hook/_customUseForm.js
+import { useState, useEffect, useRef } from "react";
 import {
   useForm as useHookForm,
   Controller,
@@ -6,8 +7,25 @@ import {
 } from "react-hook-form";
 
 export function useForm(defaultValues) {
+  // Use a ref to track if we've initialized with autofill values
+  const autofillSyncedRef = useRef(false);
+  
+  // Get autofilled values immediately if we're on the client
+  let initialValues = { ...defaultValues };
+  if (typeof window !== 'undefined' && !autofillSyncedRef.current) {
+    // Only try to get autofilled values on initial render
+    setTimeout(() => {
+      Object.keys(defaultValues).forEach(key => {
+        const input = document.querySelector(`input[name="${key}"]`);
+        if (input && input.value) {
+          initialValues[key] = input.value;
+        }
+      });
+    }, 0);
+  }
+
   const {
-    register,
+    register: originalRegister,
     handleSubmit,
     reset,
     setValue,
@@ -15,11 +33,107 @@ export function useForm(defaultValues) {
     trigger,
     control,
     formState: { errors, isSubmitting },
-  } = useHookForm({ defaultValues });
+  } = useHookForm({ 
+    defaultValues: initialValues,
+    mode: "onChange" // Validate on change for better user experience
+  });
 
   const [processing, setProcessing] = useState(false);
-  const [data, setData] = useState(defaultValues);
+  const [data, setData] = useState(initialValues);
   const [apiErrors, setApiErrors] = useState({});
+
+  // Sync with autofill on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !autofillSyncedRef.current) {
+      // This runs after the component mounts
+      autofillSyncedRef.current = true;
+      
+      // Use MutationObserver to detect autofill changes
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.type === 'attributes' && 
+              mutation.attributeName === 'value' && 
+              mutation.target.tagName === 'INPUT') {
+            const input = mutation.target;
+            const name = input.getAttribute('name');
+            if (name && Object.keys(defaultValues).includes(name)) {
+              setValue(name, input.value);
+              setData(prev => ({ ...prev, [name]: input.value }));
+            }
+          }
+        });
+      });
+      
+      // Observe all input fields
+      Object.keys(defaultValues).forEach(key => {
+        const input = document.querySelector(`input[name="${key}"]`);
+        if (input) {
+          // Set immediate values if they exist
+          if (input.value) {
+            setValue(key, input.value);
+            setData(prev => ({ ...prev, [key]: input.value }));
+          }
+          
+          // Observe future changes
+          observer.observe(input, { 
+            attributes: true, 
+            attributeFilter: ['value'] 
+          });
+        }
+      });
+      
+      // Also handle animationstart events for Chrome's autofill
+      const handleAnimationStart = (e) => {
+        if (e.animationName.includes('autofill')) {
+          const input = e.target;
+          const name = input.getAttribute('name');
+          if (name && Object.keys(defaultValues).includes(name)) {
+            // Small timeout to ensure the value is set by the browser
+            setTimeout(() => {
+              setValue(name, input.value);
+              setData(prev => ({ ...prev, [name]: input.value }));
+            }, 10);
+          }
+        }
+      };
+      
+      document.addEventListener('animationstart', handleAnimationStart);
+      
+      return () => {
+        observer.disconnect();
+        document.removeEventListener('animationstart', handleAnimationStart);
+      };
+    }
+  }, []);
+
+  // Custom register function that captures autofill
+  const register = (name, validationRules = {}) => {
+    // Extract custom validation rules if present
+    const { isEmail, ...standardRules } = validationRules;
+
+    // Add custom email validation if isEmail is specified
+    if (isEmail) {
+      standardRules.pattern = {
+        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+        message: typeof isEmail === 'string' ? isEmail : 'Please enter a valid email address'
+      };
+    }
+
+    // Get the original register props
+    const registerProps = originalRegister(name, standardRules);
+
+    // Add onInput handler to detect changes, including autofill
+    const enhancedOnChange = (e) => {
+      registerProps.onChange(e); // Original onChange
+      setData(prev => ({ ...prev, [name]: e.target.value }));
+    };
+
+    return {
+      ...registerProps,
+      onChange: enhancedOnChange,
+      onInput: enhancedOnChange // Helps with some browsers
+    };
+  };
 
   const submit = async (callback) => {
     setProcessing(true);
@@ -37,7 +151,6 @@ export function useForm(defaultValues) {
     }
 
     setData((prev) => ({ ...prev, [key]: value }));
-
     setValue(key, value);
   };
 
@@ -77,6 +190,7 @@ export function useForm(defaultValues) {
       return await response.json();
     } catch (error) {
       console.error("Request Error:", error.message);
+      throw error;
     } finally {
       setProcessing(false);
     }
@@ -106,3 +220,5 @@ export function useForm(defaultValues) {
     get,
   };
 }
+
+export default useForm;

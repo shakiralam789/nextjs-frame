@@ -39,6 +39,7 @@ const IconMap = {
   settings: CogIcon,
   logout: ArrowRightOnRectangleIcon,
   dashboard: HomeIcon,
+  components: HomeIcon,
 };
 
 // Main SidebarMenu Component
@@ -50,12 +51,12 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isBrowser, setIsBrowser] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
-  
+
   const sidebarRef = useRef(null);
   const menuRefs = useRef({});
   const flyoutRefs = useRef({});
   const prevCollapsedStateRef = useRef(isCollapsed);
-  
+
   // Handle client-side initialization
   useEffect(() => {
     setIsBrowser(true);
@@ -65,57 +66,63 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
   // Handle window resize events - only on client side
   useEffect(() => {
     if (!isBrowser) return;
-    
+
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
-      
+
       // Auto-collapse sidebar on small screens
       if (window.innerWidth < 768 && !isCollapsed) {
         toggleCollapse();
       }
-      
+
       // Update flyout positions if any are open and sidebar is collapsed
       if (isCollapsed && Object.keys(openMenus).length > 0) {
         setTimeout(() => {
-          Object.keys(openMenus).forEach(menuId => {
+          Object.keys(openMenus).forEach((menuId) => {
             updateFlyoutPosition(menuId);
           });
         }, 10);
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, [isCollapsed, openMenus, toggleCollapse, isBrowser]);
 
   // Handle document click outside of menu to close flyouts
   useEffect(() => {
     if (!isBrowser) return;
-    
+
     const handleClickOutside = (event) => {
       // Only process outside clicks when sidebar is collapsed
       if (!isCollapsed) return;
-      
+
       // Check if click is outside of sidebar and all flyouts
-      const isOutsideSidebar = sidebarRef.current && !sidebarRef.current.contains(event.target);
-      
+      const isOutsideSidebar =
+        sidebarRef.current && !sidebarRef.current.contains(event.target);
+
       // Check if the click is inside any flyout
       let isInsideFlyout = false;
-      Object.values(flyoutRefs.current).forEach(ref => {
+      Object.values(flyoutRefs.current).forEach((ref) => {
         if (ref && ref.contains(event.target)) {
           isInsideFlyout = true;
         }
       });
-      
+
       if (isOutsideSidebar && !isInsideFlyout) {
         // Close all menus on outside click
         setOpenMenus({});
       }
-      
+
       // Close mobile menu when clicking outside
-      if (windowWidth < 768 && isMobileMenuOpen && isOutsideSidebar && !isInsideFlyout) {
+      if (
+        windowWidth < 768 &&
+        isMobileMenuOpen &&
+        isOutsideSidebar &&
+        !isInsideFlyout
+      ) {
         setIsMobileMenuOpen(false);
       }
     };
@@ -129,11 +136,12 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
   // Update active item when route changes
   useEffect(() => {
     if (!isBrowser) return;
-    
+
     // First try to get it from the usePathname hook
-    const currentPathname = pathname || router.pathname || window.location.pathname;
+    const currentPathname =
+      pathname || router.pathname || window.location.pathname;
     setActiveItem(currentPathname);
-    
+
     // When route changes, expand parent menus of the active item
     const expandParentMenus = (items, path, parentPath = "") => {
       for (const item of items) {
@@ -142,38 +150,42 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
           // Found the path, return the parent path
           return parentPath;
         }
-        
+
         // Check children if they exist
         if (item.children && item.children.length > 0) {
-          const childParentPath = expandParentMenus(item.children, path, item.title);
+          const childParentPath = expandParentMenus(
+            item.children,
+            path,
+            item.title
+          );
           if (childParentPath) {
             // If returning from a successful child search, open this menu
-            setOpenMenus(prev => ({
+            setOpenMenus((prev) => ({
               ...prev,
-              [`${item.title}-0`]: { isOpen: true }
+              [`${item.title}-0`]: { isOpen: true },
             }));
-            
+
             return parentPath; // Continue up the chain
           }
         }
       }
       return null; // Path not found in this branch
     };
-    
+
     expandParentMenus(menuItems, currentPathname);
   }, [pathname, router, menuItems, isBrowser]);
 
   // Monitor sidebar collapse state changes
   useEffect(() => {
     if (!isBrowser) return;
-    
+
     // Check if the collapse state has changed
     if (prevCollapsedStateRef.current !== isCollapsed) {
       // If transitioning from expanded to collapsed and we have open menus
       if (isCollapsed && Object.keys(openMenus).length > 0) {
         // Schedule position updates for all open menus
         setTimeout(() => {
-          Object.keys(openMenus).forEach(menuId => {
+          Object.keys(openMenus).forEach((menuId) => {
             updateFlyoutPosition(menuId);
           });
         }, 10); // Small delay to ensure DOM has updated
@@ -186,9 +198,9 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
   const handleScroll = () => {
     // Only update positions when sidebar is collapsed and we have open menus
     if (!isCollapsed || Object.keys(openMenus).length === 0) return;
-    
+
     // For each open menu, update its flyout position
-    Object.keys(openMenus).forEach(menuId => {
+    Object.keys(openMenus).forEach((menuId) => {
       updateFlyoutPosition(menuId);
     });
   };
@@ -196,30 +208,30 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
   // Update flyout positions when sidebar scrolls
   useEffect(() => {
     if (!isBrowser) return;
-    
-    const navElement = sidebarRef.current?.querySelector('nav');
+
+    const navElement = sidebarRef.current?.querySelector("nav");
     if (!navElement) return;
-    navElement.addEventListener('scroll', handleScroll);
+    navElement.addEventListener("scroll", handleScroll);
     return () => {
-      navElement.removeEventListener('scroll', handleScroll);
+      navElement.removeEventListener("scroll", handleScroll);
     };
   }, [openMenus, isCollapsed, isBrowser]);
 
   // Function to update a flyout's position based on its parent
   const updateFlyoutPosition = (menuId) => {
     if (!isBrowser) return;
-    
+
     const menuRef = menuRefs.current[menuId];
     const flyoutRef = flyoutRefs.current[menuId];
-    
+
     if (!menuRef || !flyoutRef || !isCollapsed) return;
-    
+
     const menuRect = menuRef.getBoundingClientRect();
     const sidebarRect = sidebarRef.current.getBoundingClientRect();
-    
+
     // Calculate top position relative to viewport
     let topPosition = menuRect.top;
-    
+
     // Check if the flyout would go off the bottom of the screen
     const flyoutHeight = flyoutRef.offsetHeight;
     const viewportHeight = window.innerHeight;
@@ -227,7 +239,7 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
       // Position flyout from the bottom if it would go off screen
       topPosition = Math.max(viewportHeight - flyoutHeight, 0);
     }
-    
+
     // Position flyout next to the menu item
     flyoutRef.style.top = `${topPosition}px`;
     flyoutRef.style.left = `${63 + 5}px`; // 5px gap
@@ -260,12 +272,12 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
 
       // Open this menu
       newState[menuId] = { isOpen: true, parentId };
-      
+
       // Schedule position update for the next tick
       if (isBrowser && isCollapsed) {
         setTimeout(() => updateFlyoutPosition(menuId), 0);
       }
-      
+
       return newState;
     });
   };
@@ -284,20 +296,23 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
   const isItemActive = (item, path) => {
     // Exact match
     if (item.link === path) return true;
-    
+
     // When path is a sub-path of the item link (to handle nested routes)
-    if (item.link && path.startsWith(item.link) && (
+    if (
+      item.link &&
+      path.startsWith(item.link) &&
       // Only match if it's a complete segment match or the root
-      path === item.link || 
-      path.charAt(item.link.length) === '/' || 
-      item.link === '/'
-    )) return true;
-    
+      (path === item.link ||
+        path.charAt(item.link.length) === "/" ||
+        item.link === "/")
+    )
+      return true;
+
     // Check children
     if (item.children && item.children.length > 0) {
-      return item.children.some(child => isItemActive(child, path));
+      return item.children.some((child) => isItemActive(child, path));
     }
-    
+
     return false;
   };
 
@@ -312,7 +327,9 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
     const isOpen = isMenuOpen(menuId);
 
     const paddingLeft =
-      level > 0 && level < 2 && (!isCollapsed|| windowWidth < 768) ? `${level * 12 + 12}px` : "6px";
+      level > 0 && level < 2 && (!isCollapsed || windowWidth < 768)
+        ? `${level * 12 + 12}px`
+        : "6px";
 
     // Base classes for menu items
     const baseClasses = `
@@ -347,23 +364,28 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
             <div className="flex items-center">
               {Icon && (
                 <Icon
-                  className={`w-5 2xl:w-6 mr-3 ${isCollapsed ? "md:mx-auto" : "mr-3"}`}
+                  className={`w-5 2xl:w-6 mr-3 ${
+                    isCollapsed ? "md:mx-auto" : "mr-3"
+                  }`}
                 />
               )}
-              {(!isCollapsed || (isBrowser && windowWidth < 768 && isMobileMenuOpen)) && (
+              {(!isCollapsed ||
+                (isBrowser && windowWidth < 768 && isMobileMenuOpen)) && (
                 <span className="font-medium truncate">{item.title}</span>
               )}
             </div>
-            {(!isCollapsed || (isBrowser && windowWidth < 768 && isMobileMenuOpen)) && hasChildren && (
-              <div
-                className="ml-2 transition-transform duration-300"
-                style={{
-                  transform: isOpen ? "rotate(90deg)" : "rotate(0)",
-                }}
-              >
-                <ChevronRightIcon className="h-4 w-4" />
-              </div>
-            )}
+            {(!isCollapsed ||
+              (isBrowser && windowWidth < 768 && isMobileMenuOpen)) &&
+              hasChildren && (
+                <div
+                  className="ml-2 transition-transform duration-300"
+                  style={{
+                    transform: isOpen ? "rotate(90deg)" : "rotate(0)",
+                  }}
+                >
+                  <ChevronRightIcon className="h-4 w-4" />
+                </div>
+              )}
           </button>
         ) : (
           <Link
@@ -374,10 +396,13 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
             <div className="flex items-center">
               {Icon && (
                 <Icon
-                  className={`h-5 w-5 mr-3 ${isCollapsed ? "md:mx-auto" : "mr-3"}`}
+                  className={`h-5 w-5 mr-3 ${
+                    isCollapsed ? "md:mx-auto" : "mr-3"
+                  }`}
                 />
               )}
-              {(!isCollapsed || (isBrowser && windowWidth < 768 && isMobileMenuOpen)) && (
+              {(!isCollapsed ||
+                (isBrowser && windowWidth < 768 && isMobileMenuOpen)) && (
                 <span className="font-medium truncate">{item.title}</span>
               )}
             </div>
@@ -385,20 +410,22 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
         )}
 
         {/* Submenu for expanded sidebar */}
-        {hasChildren && (!isCollapsed || (isBrowser && windowWidth < 768 && isMobileMenuOpen)) && (
-          <div
-            className={`overflow-hidden transition-all duration-300 pl-2
+        {hasChildren &&
+          (!isCollapsed ||
+            (isBrowser && windowWidth < 768 && isMobileMenuOpen)) && (
+            <div
+              className={`overflow-hidden transition-all duration-300 pl-2
                       ${
                         isOpen
                           ? "max-h-[1000px] opacity-100"
                           : "max-h-0 opacity-0"
                       }`}
-          >
-            {item.children.map((child) =>
-              renderMenuItem(child, level + 1, menuId)
-            )}
-          </div>
-        )}
+            >
+              {item.children.map((child) =>
+                renderMenuItem(child, level + 1, menuId)
+              )}
+            </div>
+          )}
 
         {/* Flyout submenu for collapsed sidebar (only on desktop) */}
         {hasChildren && isCollapsed && isBrowser && windowWidth >= 768 && (
@@ -430,7 +457,8 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
                         onClick={() => toggleMenu(childId, menuId)}
                         className={`flex items-center justify-between w-full px-3 py-2 rounded-md
                                   ${
-                                    isMenuOpen(childId) || isItemActive(child, activeItem)
+                                    isMenuOpen(childId) ||
+                                    isItemActive(child, activeItem)
                                       ? "bg-primary-light text-primary-purple"
                                       : "text-gray-700 hover:bg-gray-50"
                                   }`}
@@ -496,22 +524,25 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
   // Render only browser-dependent mobile menu elements when on client
   const renderMobileElements = () => {
     if (!isBrowser) return null;
-    
+
     return (
       <>
         {/* Mobile Menu Toggle Button - Only visible on small screens */}
         {windowWidth < 768 && (
-          <button 
+          <button
             onClick={toggleMobileMenu}
             className="md:hidden fixed top-2 left-4 bg-white rounded-md shadow-md p-2"
           >
             <Bars3Icon className="h-6 w-6 text-gray-700" />
           </button>
         )}
-        
+
         {/* Mobile Overlay */}
         {windowWidth < 768 && isMobileMenuOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={toggleMobileMenu}></div>
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={toggleMobileMenu}
+          ></div>
         )}
       </>
     );
@@ -520,26 +551,38 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
   return (
     <>
       {renderMobileElements()}
-      
+
       <div
         ref={sidebarRef}
-        className={`font-16 bg-white h-screen border-r border-gray-200 transition-all duration-300 ease-in-out flex flex-col
-                  ${isCollapsed && isBrowser && windowWidth >= 768 ? "w-16" : "w-[230px]"}
-                  ${isBrowser && windowWidth < 768 
-                    ? `fixed left-0 top-0 z-50 ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}` 
-                    : "relative translate-x-0"}`}
+        className={`z-10 font-16 bg-white h-screen border-r border-gray-200 transition-all duration-300 ease-in-out flex flex-col
+                  ${
+                    isCollapsed && isBrowser && windowWidth >= 768
+                      ? "w-16"
+                      : "w-[230px]"
+                  }
+                  ${
+                    isBrowser && windowWidth < 768
+                      ? `fixed left-0 top-0 z-50 ${
+                          isMobileMenuOpen
+                            ? "translate-x-0"
+                            : "-translate-x-full"
+                        }`
+                      : "relative translate-x-0"
+                  }`}
       >
         {/* Logo */}
-        <div className="header-height relative flex items-center justify-center p-4 border-b border-gray-200">
-          <div className="shrink-0 h-8 w-8 rounded-full bg-primary-purple flex items-center justify-center">
-            {/* Logo can go here */}
-          </div>
-          {(!isCollapsed || (isBrowser && windowWidth < 768)) && (
-            <span className="ml-3 font-semibold font-24 text-gray-text truncate">
-              AppName
-            </span>
-          )}
-          
+        <div className="header-height relative p-4 border-b border-gray-200">
+          <Link href={"/dashboard"} className="flex items-center justify-center">
+            <div className="shrink-0 h-8 w-8 rounded-full bg-primary-purple flex items-center justify-center">
+              {/* Logo can go here */}
+            </div>
+            {(!isCollapsed || (isBrowser && windowWidth < 768)) && (
+              <span className="ml-3 font-semibold font-24 text-gray-text truncate">
+                AppName
+              </span>
+            )}
+          </Link>
+
           {/* Toggle Collapse Button - Only visible on desktop */}
           {isBrowser && windowWidth >= 768 && (
             <button

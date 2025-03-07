@@ -1,6 +1,7 @@
+'use client';
 import React, { useState, useEffect } from "react";
-import SearchIcon from "./icons/SearchIcon";
-import CancelIcon from "./icons/CancelIcon";
+import SearchIcon from "../icons/SearchIcon";
+import CancelIcon from "../icons/CancelIcon";
 
 export default function SearchInput({
   value: controlledValue,
@@ -40,7 +41,7 @@ export default function SearchInput({
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
-        className="pl-8 w-full placeholder:text-xs bg-white border text-sm rounded-md text-gray-800 outline-none block px-2 py-1.5"
+        className="pl-8 field-base"
       />
       {value && (
         <button

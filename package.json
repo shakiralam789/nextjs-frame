@@ -16,6 +16,7 @@
     "next": "15.1.6",
     "nextjs-toploader": "^3.7.15",
     "react": "^19.0.0",
+    "react-datepicker": "^8.1.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
     "react-redux": "^9.2.0",

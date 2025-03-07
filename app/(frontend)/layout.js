@@ -4,7 +4,6 @@ export default function layout({ children }) {
   return (
     <div className="min-h-screen flex flex-col justify-between">
       {/* <Header /> */}
-      this is frontend header
       <main className="w-full flex-1 flex flex-wrap px-4">
         <div className="w-full">{children}</div>
       </main>

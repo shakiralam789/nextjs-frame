@@ -46,6 +46,10 @@
         @apply text-[9px] lg:text-[10px] 2xl:text-xs;
     }
 
+    .def-label{
+        @apply block font-medium mb-1.5 2xl:mb-2 font-16 text-gray-600 font-16;
+    }
+
     .menu{
         @apply py-1 z-[999] border whitespace-nowrap bg-white shadow rounded-md min-w-[140px] 2xl:min-w-[180px]
     }
@@ -71,6 +75,18 @@
     .header-height{
         @apply h-[64px]
     }
+
+    .field-base{
+        @apply font-16 w-full px-3 bg-white py-2 2xl:py-2.5 border rounded-lg focus:outline-none focus:border-primary-purple
+    }
+
+    .field-base.danger{
+        @apply border-red-500
+    }
+}
+
+.react-datepicker-wrapper{
+    @apply w-full
 }
 
 .react-select-container input,
@@ -80,6 +96,21 @@
     border: none !important;
     outline: none !important;
 }
+.dropdown-icon-container{
+    padding: 0!important;
+    border-radius: none !important;
+}
+.react-select-container{
+    min-height: 33px !important;
+}
+.react-select-container > div{
+    padding: 0 !important;
+}
+
+.react-select-container > div > div{
+    margin-left: 0 !important;
+}
+
 
 .list {
     font-size: 11px !important;

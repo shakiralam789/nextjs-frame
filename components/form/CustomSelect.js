@@ -2,12 +2,12 @@
 import cn from "@/utilities/cn";
 import { useEffect, useState, useMemo } from "react";
 import Select, { components } from "react-select";
-import ChevronDown from "./icons/ChevronDown";
+import ChevronDown from "../icons/ChevronDown";
 
 // Custom Control component
 const CustomControl = ({ children, ...props }) => {
   return (
-    <components.Control {...props} className="react-select-container">
+    <components.Control {...props} className="react-select-container !cursor-pointer field-base !border-gray-200">
       {children}
     </components.Control>
   );
@@ -44,6 +44,8 @@ const DropdownIndicator = (props) => {
     </components.DropdownIndicator>
   );
 };
+
+const IndicatorSeparator = () => null;
 
 // Custom Select component
 export default function CustomSelect({
@@ -96,6 +98,7 @@ export default function CustomSelect({
         Option: CustomOption,
         Menu: CustomMenu,
         DropdownIndicator: DropdownIndicator,
+        IndicatorSeparator,
       }}
       menuPortalTarget={typeof window !== "undefined" ? document.body : null}
       styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}

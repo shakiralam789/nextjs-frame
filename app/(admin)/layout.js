@@ -24,7 +24,8 @@ const sidebarMenu = [
   },
   { title: "Time", icon: "clock", link: "/time" },
   { title: "Forms", icon: "form", link: "/forms" },
-  { title: "Settings", icon: "settings", link: "/settings" }
+  { title: "Settings", icon: "settings", link: "/settings" },
+  { title: "Components", icon: "components", link: "/components" }
 ];
 
 export default function Layout({ children }) {

@@ -8,12 +8,14 @@ import {
   ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 import { MenuCom, MenuItemCom } from "@/components/MenuCom";
+import { pageTitle } from "@/utilities/titleStore";
 
 const Header = () => {
   return (
     <header className="header-height bg-white border-b border-gray-200 h-16 flex items-center justify-between px-8 pl-20 md:pl-8">
-      
-        <h1 className="text-primary-purple font-medium">Home</h1>
+      <h1 className="text-primary-purple font-medium capitalize">
+        {pageTitle}
+      </h1>
 
       <div className="flex items-center space-x-6">
         <MenuCom
@@ -21,7 +23,9 @@ const Header = () => {
           menuBtn={() => <BellIcon className="h-6 w-6" />}
         >
           <div>
-            <div className="font-16 text-center bg-gray-light p-2 rounded-lg text-gray-text">No notification</div>
+            <div className="font-16 text-center bg-gray-light p-2 rounded-lg text-gray-text">
+              No notification
+            </div>
           </div>
         </MenuCom>
         <button className="text-gray-500 hover:text-gray-700">
