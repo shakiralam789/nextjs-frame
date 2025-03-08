@@ -6,7 +6,7 @@ import Label from "@/components/form/Label";
 import Button from "@/components/form/Button";
 import Link from "next/link";
 import TextField from "@/components/form/TextField";
-import { useForm } from "@/hook/_customUseForm";
+import useForm from "@/hook/_customUseForm";
 import ErrorMsg from "@/components/ErrorMsg";
 
 const LoginForm = () => {

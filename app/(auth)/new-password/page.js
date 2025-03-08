@@ -5,7 +5,7 @@ import AuthCard from "../partial/AuthCard";
 import Label from "@/components/form/Label";
 import Button from "@/components/form/Button";
 import Link from "next/link";
-import { useForm } from "@/hook/_customUseForm";
+import useForm from "@/hook/_customUseForm";
 import ErrorMsg from "@/components/ErrorMsg";
 import PasswordField from "@/components/form/PasswordField";
 import {

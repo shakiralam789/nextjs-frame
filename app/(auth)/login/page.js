@@ -7,7 +7,6 @@ import Button from "@/components/form/Button";
 import Link from "next/link";
 import PasswordField from "@/components/form/PasswordField";
 import TextField from "@/components/form/TextField";
-import { useForm } from "@/hook/_customUseForm";
 import ErrorMsg from "@/components/ErrorMsg";
 import {
   combineRules,
@@ -15,6 +14,8 @@ import {
   minLengthRule,
   requiredRule,
 } from "@/utilities/validationUtils";
+import useForm from "@/hook/_customUseForm";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
   const { errors, data, post, register, handleSubmit } = useForm({
@@ -22,10 +23,13 @@ const LoginForm = () => {
     password: "",
   });
 
+  const router = useRouter();
+
   const submitForm = (data) => {
-    post("/api/auth/login", {
-      body: data,
-    });
+    router.push("/dashboard");
+    // post("/api/auth/login", {
+    //   body: data,
+    // });
   };
 
   return (
