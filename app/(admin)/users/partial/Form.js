@@ -48,9 +48,12 @@ export default function Form({ userData = null }) {
           <ErrorMsg message={errors?.phone?.message} />
         </div>
       </div>
-      <Button type="submit" className="mt-4 2xl:mt-6">
-        {userData ? "Update" : "Create"} user
-      </Button>
+      <div>
+        <div className="flex items-center gap-2 mt-4 2xl:mt-6">
+          <Button type="reset" variant="danger">Reset</Button>
+          <Button type="submit">{userData ? "Update" : "Create"} user</Button>
+        </div>
+      </div>
     </form>
   );
 }

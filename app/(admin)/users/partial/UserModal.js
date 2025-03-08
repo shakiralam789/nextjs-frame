@@ -1,3 +1,4 @@
+import Button from "@/components/form/Button";
 import CustomSelect from "@/components/form/CustomSelect";
 import Label from "@/components/form/Label";
 import TextField from "@/components/form/TextField";
@@ -29,6 +30,10 @@ export default function UserModal({ title, isOpen, setIsOpen }) {
             ]}
           />
         </div>
+      </div>
+      <div className="flex items-center gap-2 mt-4 2xl:mt-6">
+            <Button variant="danger">Reset</Button>
+            <Button>Save</Button>
       </div>
     </Modal>
   );
