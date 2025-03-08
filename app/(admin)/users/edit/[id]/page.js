@@ -1,11 +1,13 @@
+"use client";
 import React from "react";
 import Page from "@/app/(admin)/partial/Page";
 import SectionTitle from "@/app/(admin)/partial/SectionTitle";
 import Form from "../../partial/Form";
+import { UsersIcon } from "@heroicons/react/24/outline";
 
 export default function CreateUser() {
   return (
-    <Page title={"Update User"}>
+    <Page title={"Update User"} Icon={UsersIcon}>
       <div className="box-section">
         <SectionTitle>Edit users</SectionTitle>
         <Form
