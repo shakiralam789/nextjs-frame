@@ -7,6 +7,7 @@ import { useState } from "react";
 import UserModal from "./partial/UserModal";
 import { UsersIcon } from "@heroicons/react/24/outline";
 
+
 export default function Users() {
   const [isOpen, setIsOpen] = useState(false);
   return (
