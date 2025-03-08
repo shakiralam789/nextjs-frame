@@ -1,5 +1,7 @@
+import { useTranslations } from "next-intl";
 import Page from "../partial/Page";
 
 export default function Dashboard() {
-  return <Page title={"Dashboard"}>Coming soon..</Page>;
+  const t = useTranslations();
+  return <Page title={"Dashboard"}>{t("welcome")}</Page>;
 }

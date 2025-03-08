@@ -1,5 +1,7 @@
 import { Poppins } from "next/font/google";
 import StoreProvider from "@/src/store/Provider";
+import {NextIntlClientProvider} from 'next-intl';
+import {getLocale, getMessages} from 'next-intl/server';
 
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
@@ -23,18 +25,22 @@ export const viewport = {
   minimumScale: 1,
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const locale = await getLocale();
+  const messages = await getMessages();
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={poppins.className + " bg-body-color"}>
         <StoreProvider>
-          <NextTopLoader
-            color="#5E35CC"
-            height={3}
-            speed={500}
-            showSpinner={false}
-          />
-          <ToastContainer style={{ marginTop: "100px" }} autoClose={3000} />
+          <NextIntlClientProvider messages={messages}>
+            <NextTopLoader
+              color="#5E35CC"
+              height={3}
+              speed={500}
+              showSpinner={false}
+            />
+            <ToastContainer style={{ marginTop: "100px" }} autoClose={3000} />
+          </NextIntlClientProvider>
         </StoreProvider>
         {children}
       </body>

@@ -1,14 +1,14 @@
-// components/Header.js
+
 import Link from "next/link";
 import Image from "next/image";
 import {
-  ChevronLeftIcon,
   BellIcon,
   EnvelopeIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 import { MenuCom, MenuItemCom } from "@/components/MenuCom";
 import { pageTitle } from "@/utilities/titleStore";
+import Language from "./language";
 
 const Header = () => {
   return (
@@ -17,7 +17,7 @@ const Header = () => {
         {pageTitle}
       </h1>
 
-      <div className="flex items-center space-x-6">
+      <div className="flex items-center space-x-4 2xl:space-x-6">
         <MenuCom
           menuBtnClass="text-gray-500 hover:text-gray-700"
           menuBtn={() => <BellIcon className="h-6 w-6" />}
@@ -28,6 +28,7 @@ const Header = () => {
             </div>
           </div>
         </MenuCom>
+        <Language />
         <button className="text-gray-500 hover:text-gray-700">
           <EnvelopeIcon className="h-6 w-6" />
         </button>
