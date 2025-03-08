@@ -64,7 +64,7 @@ const Header = () => {
               <p className="text-gray-500 font-14">Admin</p>
             </div>
           </div>
-          <MenuItemCom href="/">Logout</MenuItemCom>
+          <MenuItemCom href="/login">Logout</MenuItemCom>
         </MenuCom>
       </div>
     </header>

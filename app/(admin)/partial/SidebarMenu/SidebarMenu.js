@@ -7,7 +7,6 @@ import {
   UserIcon,
   ClockIcon,
   EnvelopeIcon,
-  CompassIcon,
   UsersIcon,
   CheckCircleIcon,
   DocumentIcon,
@@ -15,13 +14,9 @@ import {
   CubeIcon,
   ClipboardDocumentListIcon,
   CogIcon,
-  ArrowRightOnRectangleIcon,
   ChevronRightIcon,
-  ChevronDownIcon,
   Bars3Icon,
-  XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { Transition } from "@headlessui/react";
 
 // Map of icon names to their components
 const IconMap = {
@@ -29,7 +24,6 @@ const IconMap = {
   user: UserIcon,
   clock: ClockIcon,
   mail: EnvelopeIcon,
-  compass: CompassIcon,
   users: UsersIcon,
   check: CheckCircleIcon,
   document: DocumentIcon,
@@ -37,7 +31,6 @@ const IconMap = {
   cube: CubeIcon,
   clipboard: ClipboardDocumentListIcon,
   settings: CogIcon,
-  logout: ArrowRightOnRectangleIcon,
   dashboard: HomeIcon,
   components: HomeIcon,
 };
@@ -329,7 +322,7 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
     const paddingLeft =
       level > 0 && level < 2 && (!isCollapsed || windowWidth < 768)
         ? `${level * 12 + 12}px`
-        : "6px";
+        : "0px";
 
     // Base classes for menu items
     const baseClasses = `

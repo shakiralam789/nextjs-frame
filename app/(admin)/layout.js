@@ -7,11 +7,8 @@ const sidebarMenu = [
   { title: "Dashboard", icon: "dashboard", link: "/dashboard" },
   { 
     title: "Users", 
-    icon: "users", 
-    children: [
-      { title: "User List", link: "/users" },
-      { title: "Add User", link: "/users/add" }
-    ]
+    icon: "users",
+    link: "/users",
   },
   { title: "Mail", icon: "mail", link: "/mail" },
   {
@@ -43,7 +40,7 @@ export default function Layout({ children }) {
       />
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header />
-        <main className="flex-1 overflow-x-hidden overflow-y-auto p-8">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-6 2xl:p-8">
           {children}
         </main>
       </div>

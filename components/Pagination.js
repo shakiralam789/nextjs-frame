@@ -69,41 +69,44 @@ const Pagination = ({
   const pages = getPageNumbers();
 
   return (
-    <div className="flex items-center space-x-2 py-4">
-      <button
-        onClick={() => handlePageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        className="flex items-center justify-center font-16 shrink-0 size-7 2xl:size-9 rounded-lg border border-gray-200 bg-white disabled:opacity-50"
-        aria-label="Previous page"
-      >
-        <ChevronLeftIcon className="size-4" />
-      </button>
-
-      {pages.map((page, index) => (
+    <div className="flex justify-between items-center flex-wrap gap-2">
+      <p className="text-gray-500 font-14">Showing 1 to 10 of 120 Entries</p>
+      <div className="flex items-center space-x-2 py-4">
         <button
-          key={index}
-          onClick={() =>
-            typeof page === "number" ? handlePageChange(page) : null
-          }
-          disabled={page === "..."}
-          className={`flex items-center justify-center font-16 shrink-0 size-7 2xl:size-9 rounded-lg ${
-            currentPage === page
-              ? "bg-primary-purple text-white"
-              : "bg-white border border-gray-200 text-gray-700"
-          } ${page === "..." ? "cursor-default" : "cursor-pointer"}`}
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="flex items-center justify-center font-16 shrink-0 size-7 2xl:size-9 rounded-lg border border-gray-200 bg-white disabled:opacity-50"
+          aria-label="Previous page"
         >
-          {page}
+          <ChevronLeftIcon className="size-4" />
         </button>
-      ))}
 
-      <button
-        onClick={() => handlePageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        className="flex items-center justify-center font-16 shrink-0 size-7 2xl:size-9 rounded-lg border border-gray-200 bg-white disabled:opacity-50"
-        aria-label="Next page"
-      >
-        <ChevronRightIcon className="size-4" />
-      </button>
+        {pages.map((page, index) => (
+          <button
+            key={index}
+            onClick={() =>
+              typeof page === "number" ? handlePageChange(page) : null
+            }
+            disabled={page === "..."}
+            className={`flex items-center justify-center font-16 shrink-0 size-7 2xl:size-9 rounded-lg ${
+              currentPage === page
+                ? "bg-primary-purple text-white"
+                : "bg-white border border-gray-200 text-gray-700"
+            } ${page === "..." ? "cursor-default" : "cursor-pointer"}`}
+          >
+            {page}
+          </button>
+        ))}
+
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="flex items-center justify-center font-16 shrink-0 size-7 2xl:size-9 rounded-lg border border-gray-200 bg-white disabled:opacity-50"
+          aria-label="Next page"
+        >
+          <ChevronRightIcon className="size-4" />
+        </button>
+      </div>
     </div>
   );
 };

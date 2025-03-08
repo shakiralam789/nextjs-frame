@@ -1,5 +1,28 @@
+"use client";
+import { Button } from "@/components/form/Button";
+import Filter from "../partial/Filter";
 import Page from "../partial/Page";
+import UserTableDesign from "./partial/UserTable";
+import { useState } from "react";
+import UserModal from "./partial/UserModal";
 
 export default function Users() {
-  return <Page title={"Users"}>Coming soon..</Page>;
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <Page title={"Users"}>
+      <div className="box-section">
+        <Filter onChange={(e) => console.log(e)}>
+          <Button plus={true} onClick={() => setIsOpen(true)}>
+            Add new user
+          </Button>
+          <Button href={"/users/create"} plus={true}>
+            Create user
+          </Button>
+        </Filter>
+        <UserTableDesign />
+      </div>
+
+      <UserModal title={"Add User"} isOpen={isOpen} setIsOpen={setIsOpen} />
+    </Page>
+  );
 }

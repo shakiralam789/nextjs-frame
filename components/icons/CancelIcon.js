@@ -7,9 +7,9 @@ export default function CancelIcon({ className = "" }) {
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      strokeWidth="1.5"
+      strokeWidth="2"
       stroke="currentColor"
-      className={cn("size-4 2xl:size-5", className)}
+      className={cn("size-5 2xl:size-6", className)}
     >
       <path
         strokeLinecap="round"

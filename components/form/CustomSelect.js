@@ -7,7 +7,7 @@ import ChevronDown from "../icons/ChevronDown";
 // Custom Control component
 const CustomControl = ({ children, ...props }) => {
   return (
-    <components.Control {...props} className="react-select-container !cursor-pointer field-base !border-gray-200">
+    <components.Control {...props} className="react-select-container !cursor-pointer field-base !rounded-lg !border-gray-200">
       {children}
     </components.Control>
   );
@@ -15,7 +15,7 @@ const CustomControl = ({ children, ...props }) => {
 
 // Custom Menu component
 const CustomMenu = (props) => (
-  <components.Menu {...props}>{props.children}</components.Menu>
+  <components.Menu className="!px-1 2xl:!px-2 !py-0 2xl:!py-1 !rounded-xl" {...props}>{props.children}</components.Menu>
 );
 
 // Custom Option component
