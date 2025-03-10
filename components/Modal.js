@@ -28,7 +28,7 @@ export default function Modal({
               transition
               className="w-full max-w-md 2xl:max-w-2xl rounded-xl bg-white p-4 2xl:p-6"
             >
-              <div className="flex justify-between items-center border-b border-gray-200 pb-2 mb-2">
+              <div className="flex justify-between items-center border-b border-gray-200 pb-2 mb-4 2xl:mb-6">
                 <DialogTitle as="h3" className="font-20 font-medium text-black">
                   {title}
                 </DialogTitle>

@@ -20,7 +20,7 @@ const Header = () => {
       <div className="flex items-center space-x-4 2xl:space-x-6">
         <MenuCom
           menuBtnClass="text-gray-500 hover:text-gray-700"
-          menuBtn={() => <BellIcon className="h-6 w-6" />}
+          menuBtn={() => <BellIcon className="size-5 2xl:size-6" />}
         >
           <div>
             <div className="font-16 text-center bg-gray-light p-2 rounded-lg text-gray-text">
@@ -30,7 +30,7 @@ const Header = () => {
         </MenuCom>
         <Language />
         <button className="text-gray-500 hover:text-gray-700">
-          <EnvelopeIcon className="h-6 w-6" />
+          <EnvelopeIcon className="size-5 2xl:size-6" />
         </button>
 
         <MenuCom

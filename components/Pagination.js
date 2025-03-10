@@ -75,7 +75,7 @@ const Pagination = ({
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="flex items-center justify-center font-16 shrink-0 size-7 2xl:size-9 rounded-lg border border-gray-200 bg-white disabled:opacity-50"
+          className="flex items-center justify-center font-16 shrink-0 size-7 2xl:size-9 rounded-lg border border-gray-200 bg-white disabled:opacity-50 focus:ring-offset-2 focus:ring-2 focus:ring-primary-purple/50"
           aria-label="Previous page"
         >
           <ChevronLeftIcon className="size-4" />
@@ -88,7 +88,7 @@ const Pagination = ({
               typeof page === "number" ? handlePageChange(page) : null
             }
             disabled={page === "..."}
-            className={`flex items-center justify-center font-16 shrink-0 size-7 2xl:size-9 rounded-lg ${
+            className={`flex items-center justify-center font-16 shrink-0 size-7 2xl:size-9 rounded-lg focus:ring-offset-2 focus:ring-2 focus:ring-primary-purple/50 ${
               currentPage === page
                 ? "bg-primary-purple text-white"
                 : "bg-white border border-gray-200 text-gray-700"
@@ -101,7 +101,7 @@ const Pagination = ({
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="flex items-center justify-center font-16 shrink-0 size-7 2xl:size-9 rounded-lg border border-gray-200 bg-white disabled:opacity-50"
+          className="flex items-center justify-center font-16 shrink-0 size-7 2xl:size-9 rounded-lg border border-gray-200 bg-white disabled:opacity-50 focus:ring-offset-2 focus:ring-2 focus:ring-primary-purple/50"
           aria-label="Next page"
         >
           <ChevronRightIcon className="size-4" />

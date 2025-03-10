@@ -376,7 +376,7 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
                     transform: isOpen ? "rotate(90deg)" : "rotate(0)",
                   }}
                 >
-                  <ChevronRightIcon className="h-4 w-4" />
+                  <ChevronRightIcon strokeWidth={2} className="size-3 2xl:size-3.5" />
                 </div>
               )}
           </button>
@@ -526,7 +526,7 @@ const SidebarMenu = ({ menuItems, isCollapsed, toggleCollapse }) => {
             onClick={toggleMobileMenu}
             className="md:hidden fixed top-2 left-4 bg-white rounded-md shadow-md p-2"
           >
-            <Bars3Icon className="h-6 w-6 text-gray-700" />
+            <Bars3Icon className="size-5 2xl:size-6 text-gray-700" />
           </button>
         )}
 
