@@ -15,7 +15,8 @@ import {
   requiredRule,
 } from "@/utilities/validationUtils";
 import useForm from "@/hook/_customUseForm";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
+
 
 const LoginForm = () => {
   const { errors, data, post, register, handleSubmit } = useForm({

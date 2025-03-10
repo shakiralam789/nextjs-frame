@@ -6,8 +6,9 @@ import ChevronDown from "../icons/ChevronDown";
 
 // Custom Control component
 const CustomControl = ({ children, ...props }) => {
+  const {selectProps} = props;
   return (
-    <components.Control {...props} className="react-select-container !cursor-pointer field-base !rounded-lg !border-gray-200">
+    <components.Control {...props} className={`${selectProps.menuIsOpen ? "open" : ""} react-select-container !cursor-pointer field-base !rounded-lg !border-gray-200`}>
       {children}
     </components.Control>
   );

@@ -2,7 +2,8 @@
 import React, { useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { HomeIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import { HomeIcon, ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
+import Button from "@/components/form/Button";
 
 // Route mappings for automatic breadcrumb generation
 const ROUTE_MAPPINGS = {
@@ -179,7 +180,8 @@ export default function Breadcrumb({ items, className = "", Icon }) {
 
       {/* back button */}
       {breadcrumbItems.length > 1 && (
-        <Link
+        <Button
+          variant="stroke"
           href={(() => {
             const path = pathname || "";
             if (
@@ -197,14 +199,15 @@ export default function Breadcrumb({ items, className = "", Icon }) {
 
             return breadcrumbItems[breadcrumbItems.length - 2]?.href || "/";
           })()}
-          className="border border-gray-200 hover:bg-gray-200 px-2 pr-1 py-0.5 rounded-md text-gray-500 hover:text-gray-700 flex items-center"
+          className="px-2 pl-1 py-1"
         >
-          <span className="font-medium">Back</span>
-          <ChevronRightIcon
-            className="flex-shrink-0 size-4 text-gray-400 ml-2"
+          <ChevronLeftIcon
+            className="flex-shrink-0 size-3.5 2xl:size-4 mr-2"
             aria-hidden="true"
+            strokeWidth={2}
           />
-        </Link>
+          <span className="font-medium">Back</span>
+        </Button>
       )}
     </nav>
   );
